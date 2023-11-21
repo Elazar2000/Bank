@@ -1,0 +1,159 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Ivano Ecommerce Store</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="{% static 'assets/favicon.ico' %}" />
+        <!-- Bootstrap icons-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="{% static 'css1/styles.css' %}" rel="stylesheet" />
+    </head>
+<body>
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Registration form</h1>
+            <p class="lead fw-normal text-white-50 mb-0">Fill out the details</p>
+        </div>
+    </div>
+</header>
+    <div class="container mt-5">
+        <h1>Form Requirements</h1>
+        <form action="{% url 'regform' %}" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name" name="name">
+            </div>
+            <div class="form-group">
+                <label for="dob">DOB</label>
+                <input type="date" class="form-control" id="dob" name="dob">
+            </div>
+            <div class="form-group">
+                <label for="age">Age</label>
+                <input type="number" class="form-control" id="age" name="age">
+            </div>
+            <div class="form-group">
+                <label for="gender">Gender</label>
+                <select class="form-control" id="gender" name="gender">
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="phoneNumber">Phone Number</label>
+                <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber">
+            </div>
+            <div class="form-group">
+                <label for="mailId">Mail ID</label>
+                <input type="email" class="form-control" id="mailId" name="mailId">
+            </div>
+            <div class="form-group">
+                <label for="address">Address</label>
+                <input type="text" class="form-control" id="address" name="address">
+            </div>
+            <div class="form-group">
+                <label for="district">District</label>
+                <select class="form-control" id="district" name="district">
+                    <option value="trivandrum">Trivandrum</option>
+                    <option value="kollam">Kollam</option>
+                    <option value="ernakulam">Ernakulam</option>
+                    <option value="calicut">Calicut</option>
+                    <option value="kannur">Kannur</option>
+                    <!-- Add more districts as needed -->
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="branch">Branch</label>
+                <select class="form-control" id="branch" name="branch">
+                    <!-- This will be dynamically populated based on the selected district -->
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="accountType">Account Type</label>
+                <select class="form-control" id="accountType" name="accountType">
+                    <option value="savings">Savings Account</option>
+                    <option value="current">Current Account</option>
+                    <!-- Add more account types as needed -->
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Materials Provided</label><br>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="debitCard" name="materials" value="debitCard">
+                    <label class="form-check-label" for="debitCard">Debit Card</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="creditCard" name="materials" value="creditCard">
+                    <label class="form-check-label" for="creditCard">Credit Card</label>
+                </div>
+                <!-- Add more materials checkboxes as needed -->
+            </div>
+            <button type="submit" class="btn btn-primary">Submit & Logout</button>
+        </form>
+        <!-- Inside your form after the submission -->
+        <!-- In your template -->
+            <!-- Inside your form after the submission -->
+            {% if messages %}
+                {% for message in messages %}
+                    {% if message.tags == 'success' %}
+                        <p id="submissionMessage">{{ message }}</p>
+                        <a href="{% url 'home' %}" id="returnHome">Return to Home Page</a>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+
+
+
+
+    </div>
+<script>
+    const branches = {
+        'trivandrum': ['pmg', 'kattakada'],
+        'kollam': ['adoor', 'poovar'],
+        'ernakulam': ['kochi', 'aluva'],
+        'calicut': ['thallesery', 'haripad'],
+        'kannur': ['payanur', 'madayipara'],  // Add more districts and their branches as needed
+    };
+
+    const districtSelect = document.getElementById('district');
+    const branchSelect = document.getElementById('branch');
+
+    districtSelect.addEventListener('change', function() {
+        const selectedDistrict = districtSelect.value;
+        const districtBranches = branches[selectedDistrict] || [];
+
+        // Clear existing options
+        branchSelect.innerHTML = '';
+
+        // Populate branches for the selected district
+        districtBranches.forEach(branch => {
+            const option = document.createElement('option');
+            option.value = branch;
+            option.textContent = branch;
+            branchSelect.appendChild(option);
+        });
+    });
+</script>
+<br>
+<br>
+
+
+    <footer class="py-5 bg-dark">
+            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2023</p></div>
+        </footer>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="{% static 'js1/scripts.js' %}"></script>
+</body>
+</html>
